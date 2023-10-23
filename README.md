@@ -50,7 +50,7 @@ Creates new user.
 | `201 Created`     | none                                    | If user successfully registered. |
 | `400 Bad Request` | [`ExceptionMessage`](#exceptionmessage) | If registration failed.          |
 
-### `GET /api/v1/auth/login`
+### `POST /api/v1/auth/login`
 
 Authenticates user.
 
@@ -152,6 +152,7 @@ Creates schedule with provided params.
 
 ```json
 {
+  "id": 1,
   "trains": 5,
   "capacity": 60,
   "flow": [
@@ -173,6 +174,7 @@ Creates schedule with provided params.
 
 | Field      | Type                                    | Required | Description                                                 |
 |------------|-----------------------------------------|----------|-------------------------------------------------------------|
+| `id`       | long                                    | Yes      | ID of the request.                                          |
 | `trains`   | int                                     | Yes      | Amount of train cars.                                       |
 | `capacity` | int                                     | Yes      | Capacity of one train car.                                  |
 | `flow`     | [`FlowMeasurement[]`](#flowmeasurement) | Yes      | Not empty array of flow measurements for a particular time. |
