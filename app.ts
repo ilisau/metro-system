@@ -4,11 +4,13 @@ import {router as registerRouter} from "./server/routes/auth/register";
 import {router as userRouter} from "./server/routes/users/[id]/index";
 import {router as userSchedulesRouter} from "./server/routes/users/[id]/schedules";
 import {router as scheduleRouter} from "./server/routes/schedule/index";
+import authorizationMiddleware from "./server/security/authorizationMiddleware";
 
 const app = express()
 const port = 3000
 
 app.use(express.json());
+app.use(authorizationMiddleware);
 app.use("/api/v1/auth", loginRouter as Router);
 app.use("/api/v1/auth", registerRouter as Router);
 app.use("/api/v1/users", userRouter as Router);
