@@ -1,36 +1,48 @@
 import User from "../model/User";
 import {LoginResponse} from "../model/LoginResponse";
-import ExceptionMessage from "../model/ExceptionMessage";
 import LoginRequest from "../model/LoginRequest";
 import tokenService from "./tokenService";
 import userService from "./userService";
+import bcrypt from "bcrypt";
 
 class AuthService {
 
     constructor() {
     }
 
-    login(request: LoginRequest): LoginResponse | ExceptionMessage {
-        const foundUser = userService.getByUsername(request.username);
-        if (foundUser instanceof User) {
-            //TODO compare with password
-            const response = new LoginResponse(
-                tokenService.accessToken(foundUser.username),
-                tokenService.refreshToken(foundUser.username)
-            );
-            return response;
-        } else {
-            return foundUser;
+    async login(request: LoginRequest): Promise<LoginResponse> {
+        try {
+            const foundUser = await userService.getByUsername(request.username);
+            const result = await new Promise((resolve, reject) => {
+                bcrypt.compare(request.password, foundUser.password, (err: Error | undefined, result) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve(result);
+                    }
+                });
+            });
+
+            if (!result) {
+                throw new Error("Invalid credentials.");
+            } else {
+                const response = new LoginResponse(
+                    await tokenService.accessToken(foundUser.username),
+                    await tokenService.refreshToken(foundUser.username)
+                );
+                //TODO save tokens
+                return response;
+            }
+        } catch (e: any) {
+            throw new Error("Invalid credentials.");
         }
     }
 
-    register(user: User): undefined | ExceptionMessage {
-        const foundUser = userService.getByUsername(user.username);
-        if (foundUser instanceof User) {
-            return new ExceptionMessage("User already exists.")
-        } else {
-            userService.save(user);
+    async register(user: User) {
+        if (await userService.exists(user.username)) {
+            throw new Error("User already exists.")
         }
+        await userService.save(user);
     }
 
 }

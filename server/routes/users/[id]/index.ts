@@ -5,11 +5,13 @@ import {validateAuthorization, validatePrincipal} from "../../../security/permis
 
 export const router = express.Router();
 
-router.get('/:id', validateAuthorization(), validatePrincipal(), function (req, res, next) {
+router.get('/:id', validateAuthorization(), validatePrincipal(), async function (req, res, next) {
     const id = Number.parseInt(req.params.id);
-    const user = userService.getById(id);
-    if (user instanceof ExceptionMessage) {
+    try {
+        const user = await userService.getById(id);
+        res.send(user);
+    } catch (e: any) {
         res.status(404);
+        res.send(new ExceptionMessage(e.message));
     }
-    res.send(user);
 });
