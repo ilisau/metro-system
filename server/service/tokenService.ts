@@ -1,31 +1,45 @@
 import Claims from "../security/Claims";
+import dotenv from "dotenv";
+import userService from "./userService";
+import jwt from "../security/JWT"
 
 class TokenService {
 
-    #key: string;
+    #accessExpiration: number;
+    #refreshExpiration: number;
 
     constructor() {
-        this.#key = "custom jwt key";
+        dotenv.config();
+        this.#accessExpiration = Number(process.env.ACCESS_TOKEN_EXPIRATION_TIME);
+        this.#refreshExpiration = Number(process.env.REFRESH_TOKEN_EXPIRATION_TIME);
     }
 
-    accessToken(username: string): string {
-        //TODO implement
-        return "access" + username;
+    async accessToken(username: string): Promise<string> {
+        const user = await userService.getByUsername(username);
+        const payload = {type: "ACCESS", userId: user.id};
+        return jwt.sign(payload, this.#accessExpiration * 60);
     }
 
-    refreshToken(username: string): string {
-        //TODO implement
-        return "refresh" + username;
+    async refreshToken(username: string): Promise<string> {
+        const user = await userService.getByUsername(username);
+        const payload = {type: "REFRESH", userId: user.id};
+        return jwt.sign(payload, this.#refreshExpiration * 60);
     }
 
-    isValid(token: String): boolean {
-        //TODO implement
-        return true;
+    isValid(token: string): boolean {
+        return jwt.isValid(token);
     }
 
-    parseClaims(token: String): Claims {
-        //TODO implement
-        return new Claims();
+    parseClaims(token: string): Claims {
+        const claims = new Claims();
+        const object = jwt.decode(token);
+        for (const key in object) {
+            if (object.hasOwnProperty(key)) {
+                const value = object[key as keyof typeof object];
+                claims.put(key, value);
+            }
+        }
+        return claims;
     }
 
 }

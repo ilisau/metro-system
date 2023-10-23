@@ -9,10 +9,11 @@ class ApplicationContext {
     constructor() {
     }
 
-    setPrincipal(id: number) {
-        const user = userService.getById(id);
-        if (user instanceof User) {
-            this.#principal = user;
+    async setPrincipal(id: number) {
+        try {
+            this.#principal = await userService.getById(id);
+        } catch (e: any) {
+            this.#principal = undefined;
         }
     }
 

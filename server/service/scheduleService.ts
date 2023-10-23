@@ -9,11 +9,11 @@ class ScheduleService {
         this.#schedules = [];
     }
 
-    getAllByAuthorId(id: number): Schedule[] {
+    async getAllByAuthorId(id: number): Promise<Schedule[]> {
         return this.#schedules.filter(s => s.authorId === id);
     }
 
-    create(scheduleRequest: ScheduleRequest): Schedule {
+    async create(scheduleRequest: ScheduleRequest): Promise<Schedule> {
         const schedule = new Schedule(
             this.#schedules.length + 1,
             scheduleRequest.authorId,

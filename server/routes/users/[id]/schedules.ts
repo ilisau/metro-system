@@ -4,8 +4,8 @@ import {validateAuthorization, validatePrincipal} from "../../../security/permis
 
 export const router = express.Router();
 
-router.get('/:id/schedules', validateAuthorization(), validatePrincipal(), function (req, res, next) {
+router.get('/:id/schedules', validateAuthorization(), validatePrincipal(), async function (req, res, next) {
     const id = Number.parseInt(req.params.id);
-    const schedules = scheduleService.getAllByAuthorId(id);
+    const schedules = await scheduleService.getAllByAuthorId(id);
     res.send(schedules);
 });

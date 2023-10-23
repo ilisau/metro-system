@@ -1,5 +1,6 @@
 import User from "../model/User";
-import ExceptionMessage from "../model/ExceptionMessage";
+
+import bcrypt from 'bcrypt';
 
 class UserService {
 
@@ -9,26 +10,34 @@ class UserService {
         this.#users = [];
     }
 
-    getById(id: number): User | ExceptionMessage {
+    async getById(id: number): Promise<User> {
         const foundUser = this.#users.filter(u => u.id === id);
         if (foundUser.length) {
             return foundUser[0];
         } else {
-            return new ExceptionMessage("User not found.");
+            throw new Error("User not found.");
         }
     }
 
-    getByUsername(username: string): User | ExceptionMessage {
+    async getByUsername(username: string): Promise<User> {
         const foundUser = this.#users.filter(u => u.username === username);
         if (foundUser.length) {
             return foundUser[0];
         } else {
-            return new ExceptionMessage("User not found.");
+            throw new Error("User not found.");
         }
     }
 
-    save(user: User) {
+    async exists(username: string): Promise<boolean> {
+        const foundUser = this.#users.filter(u => u.username === username);
+        return !!foundUser.length;
+    }
+
+    async save(user: User) {
         user.id = this.#users.length + 1;
+        bcrypt.hash(user.password, 10, function (err: Error | undefined, hash: string) {
+            user.password = hash;
+        });
         this.#users.push(user);
     }
 

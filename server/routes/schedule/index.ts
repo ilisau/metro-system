@@ -5,9 +5,9 @@ import {validateAuthorization} from "../../security/permissionValidator";
 
 export const router = express.Router();
 
-router.post('/', validateAuthorization(), function (req: any, res, next) {
+router.post('/', validateAuthorization(), async function (req: any, res, next) {
     const data: ScheduleRequest = req.body;
-    const response = scheduleService.create(data);
+    const response = await scheduleService.create(data);
     res.status(201);
     res.send(response);
 });

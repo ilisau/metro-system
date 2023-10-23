@@ -30,8 +30,11 @@ This application uses Express, Redis. Passwords are encrypted using BCrypt-10.
 
 **Configs:**
 
-* `port` - server port
-* `redisURL` - URL of Redis
+You need to pass next arguments to `.env` file.
+
+* `JWT_SECRET` - BASE_64 encoded secret for JWT tokens
+* `ACCESS_TOKEN_EXPIRATION_TIME` - expiration time of access token in minutes
+* `REFRESH_TOKEN_EXPIRATION_TIME` - expiration time of refresh token in minutes
 
 This application is accessible via REST.
 
