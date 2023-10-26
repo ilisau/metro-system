@@ -3,7 +3,7 @@ export default class User {
     id: number;
     name: string;
     username: string;
-    password: string;
+    password: string | undefined;
 
     constructor(id: number, name: string, username: string, password: string) {
         this.id = id;
