@@ -35,9 +35,7 @@ class UserRepository {
     }
 
     async save(user: User) {
-        // user.id = this.#users.length + 1;
-        //TODO set dynamic user id
-        user.id = 1;
+        user.id = await this.#client.scard(usersKey()) / 2 + 1;
         await this.#client.sadd(usersKey(), user.id);
         await this.#client.sadd(usersKey(), user.username);
         await this.#client.set(userKey(user.username), user.id);

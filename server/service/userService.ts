@@ -18,7 +18,7 @@ class UserService {
     }
 
     async save(user: User) {
-        bcrypt.hash(user.password, 10, async function (err: Error | undefined, hash: string) {
+        bcrypt.hash(user.password!, 10, async function (err: Error | undefined, hash: string) {
             user.password = hash;
             await userRepository.save(user);
         });

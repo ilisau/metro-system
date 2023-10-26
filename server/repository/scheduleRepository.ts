@@ -29,8 +29,7 @@ class ScheduleRepository {
     }
 
     async save(schedule: Schedule) {
-        //TODO set dynamic schedule id
-        schedule.id = 1;
+        schedule.id = await this.#client.scard(schedulesKey()) + 1;
         await this.#client.sadd(schedulesKey(), schedule.id);
         await this.#client.hset(scheduleKey(schedule.id), schedule);
         await this.#client.sadd(userSchedulesKey(schedule.authorId), schedule.id);

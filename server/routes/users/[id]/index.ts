@@ -9,6 +9,7 @@ router.get('/:id', validateAuthorization(), validatePrincipal(), async function 
     const id = Number.parseInt(req.params.id);
     try {
         const user = await userService.getById(id);
+        user.password = undefined;
         res.send(user);
     } catch (e: any) {
         res.status(404);

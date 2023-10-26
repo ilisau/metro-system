@@ -13,7 +13,7 @@ class AuthService {
         try {
             const foundUser = await userService.getByUsername(request.username);
             const result = await new Promise((resolve, reject) => {
-                bcrypt.compare(request.password, foundUser.password, (err: Error | undefined, result) => {
+                bcrypt.compare(request.password, foundUser.password!, (err: Error | undefined, result) => {
                     if (err) {
                         reject(err);
                     } else {
@@ -41,6 +41,21 @@ class AuthService {
             throw new Error("User already exists.")
         }
         await userService.save(user);
+    }
+
+    async refresh(token: string): Promise<LoginResponse> {
+        if (tokenService.isValid(token)) {
+            const userId: number = <number>tokenService.parseClaims(token).get("userId");
+            const foundUser = await userService.getById(userId);
+            const response = new LoginResponse(
+                await tokenService.accessToken(foundUser.username),
+                await tokenService.refreshToken(foundUser.username)
+            );
+            await tokenRepository.save(foundUser.id, response);
+            return response;
+        } else {
+            throw new Error("Invalid token.");
+        }
     }
 
 }
