@@ -1,29 +1,33 @@
 import {Schedule} from "../model/Schedule";
 import {ScheduleRequest} from "../model/ScheduleRequest";
+import scheduleRepository from "../repository/scheduleRepository";
 
 class ScheduleService {
 
-    #schedules: Schedule[];
-
-    constructor() {
-        this.#schedules = [];
+    async getById(id: number): Promise<Schedule> {
+        return scheduleRepository.getById(id);
     }
 
     async getAllByAuthorId(id: number): Promise<Schedule[]> {
-        return this.#schedules.filter(s => s.authorId === id);
+        return scheduleRepository.getAllByAuthorId(id);
     }
 
     async create(scheduleRequest: ScheduleRequest): Promise<Schedule> {
         const schedule = new Schedule(
-            this.#schedules.length + 1,
+            0,
             scheduleRequest.authorId,
             scheduleRequest.capacity,
             1
         );
         //TODO implement logic
-        this.#schedules.push(schedule);
+        await scheduleRepository.save(schedule);
         return schedule;
     }
+
+    async isAuthor(userId: number, scheduleId: number): Promise<boolean> {
+        return scheduleRepository.isAuthor(userId, scheduleId);
+    }
+
 }
 
 export default new ScheduleService();

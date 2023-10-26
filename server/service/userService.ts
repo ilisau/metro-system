@@ -1,44 +1,27 @@
 import User from "../model/User";
+import userRepository from "../repository/userRepository";
 
 import bcrypt from 'bcrypt';
 
 class UserService {
 
-    #users: User[] //temporary
-
-    constructor() {
-        this.#users = [];
-    }
-
     async getById(id: number): Promise<User> {
-        const foundUser = this.#users.filter(u => u.id === id);
-        if (foundUser.length) {
-            return foundUser[0];
-        } else {
-            throw new Error("User not found.");
-        }
+        return userRepository.getById(id);
     }
 
     async getByUsername(username: string): Promise<User> {
-        const foundUser = this.#users.filter(u => u.username === username);
-        if (foundUser.length) {
-            return foundUser[0];
-        } else {
-            throw new Error("User not found.");
-        }
+        return userRepository.getByUsername(username);
     }
 
     async exists(username: string): Promise<boolean> {
-        const foundUser = this.#users.filter(u => u.username === username);
-        return !!foundUser.length;
+        return userRepository.exists(username);
     }
 
     async save(user: User) {
-        user.id = this.#users.length + 1;
-        bcrypt.hash(user.password, 10, function (err: Error | undefined, hash: string) {
+        bcrypt.hash(user.password, 10, async function (err: Error | undefined, hash: string) {
             user.password = hash;
+            await userRepository.save(user);
         });
-        this.#users.push(user);
     }
 
 }
