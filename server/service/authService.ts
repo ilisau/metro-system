@@ -28,7 +28,7 @@ class AuthService {
                     await tokenService.accessToken(foundUser.username),
                     await tokenService.refreshToken(foundUser.username)
                 );
-                await tokenRepository.save(foundUser.id, response);
+                await tokenRepository.save(foundUser.id!, response);
                 return response;
             }
         } catch (e: any) {
@@ -52,7 +52,7 @@ class AuthService {
                 await tokenService.accessToken(foundUser.username),
                 await tokenService.refreshToken(foundUser.username)
             );
-            await tokenRepository.save(foundUser.id, response);
+            await tokenRepository.save(foundUser.id!, response);
             return response;
         } else {
             throw new Error("Invalid token.");

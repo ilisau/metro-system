@@ -2,11 +2,12 @@ import express from "express";
 import User from "../../model/User.js";
 import authService from "../../service/authService.js";
 import ExceptionMessage from "../../model/ExceptionMessage";
+import {validateUser} from "../../security/requestValidators";
 
 
 export const router = express.Router();
 
-router.post('/register', async function (req: any, res, next) {
+router.post('/register', validateUser(), async function (req: any, res, next) {
     try {
         const data: User = req.body;
         await authService.register(data);
