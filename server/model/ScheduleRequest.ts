@@ -2,7 +2,7 @@ import {FlowMeasurement} from "./FlowMeasurement";
 
 export class ScheduleRequest {
 
-    id: number;
+    id: number | undefined;
     trains: number;
     capacity: number;
     accuracy: number;

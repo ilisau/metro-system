@@ -1,6 +1,6 @@
 export default class User {
 
-    id: number;
+    id: number | undefined;
     name: string;
     username: string;
     password: string | undefined;
