@@ -1,15 +1,21 @@
+import {ScheduleMeasurement} from "./ScheduleMeasurement";
+
 export class Schedule {
 
     id: number;
     authorId: number;
     capacity: number;
-    interval: number;
+    accuracy: number;
+    averageInterval: number;
+    intervals: ScheduleMeasurement[];
 
-    constructor(id: number, authorId: number, capacity: number, interval: number) {
-        this.id = id;
+    constructor(authorId: number, capacity: number) {
+        this.id = 0;
         this.authorId = authorId;
         this.capacity = capacity;
-        this.interval = interval;
+        this.accuracy = 0;
+        this.averageInterval = 0;
+        this.intervals = [];
     }
 
 }
