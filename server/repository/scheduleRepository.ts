@@ -12,8 +12,12 @@ class ScheduleRepository {
 
     async getById(id: number): Promise<Schedule> {
         if (await this.#client.sismember(schedulesKey(), id)) {
-            const hashPairs = await this.#client.hgetall(scheduleKey(id));
-            return hashPairs as unknown as Schedule;
+            try {
+                const json = await this.#client.get(scheduleKey(id));
+                return JSON.parse(json!) as unknown as Schedule;
+            } catch (e) {
+                throw new Error("Schedule is corrupted.");
+            }
         } else {
             throw new Error("Schedule not found.");
         }
@@ -29,10 +33,9 @@ class ScheduleRepository {
     }
 
     async save(schedule: Schedule) {
-        //TODO fix how intervals are saved
         schedule.id = await this.#client.scard(schedulesKey()) + 1;
         await this.#client.sadd(schedulesKey(), schedule.id);
-        await this.#client.hset(scheduleKey(schedule.id), schedule);
+        await this.#client.set(scheduleKey(schedule.id), JSON.stringify(schedule));
         await this.#client.sadd(userSchedulesKey(schedule.authorId), schedule.id);
     }
 
