@@ -29,6 +29,7 @@ class ScheduleRepository {
     }
 
     async save(schedule: Schedule) {
+        //TODO fix how intervals are saved
         schedule.id = await this.#client.scard(schedulesKey()) + 1;
         await this.#client.sadd(schedulesKey(), schedule.id);
         await this.#client.hset(scheduleKey(schedule.id), schedule);

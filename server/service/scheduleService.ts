@@ -1,6 +1,7 @@
 import {Schedule} from "../model/Schedule";
 import {ScheduleRequest} from "../model/ScheduleRequest";
 import scheduleRepository from "../repository/scheduleRepository";
+import {generateSchedule, getAverageInterval} from "./scheduleCore";
 
 class ScheduleService {
 
@@ -12,14 +13,21 @@ class ScheduleService {
         return scheduleRepository.getAllByAuthorId(id);
     }
 
-    async create(scheduleRequest: ScheduleRequest): Promise<Schedule> {
+    async create(request: ScheduleRequest): Promise<Schedule> {
         const schedule = new Schedule(
-            0,
-            scheduleRequest.authorId,
-            scheduleRequest.capacity,
-            1
+            request.authorId,
+            request.capacity * request.trains
         );
-        //TODO implement logic
+        const scheduleMeasurements = generateSchedule(
+            request.flow,
+            request.capacity * request.trains,
+            request.accuracy,
+            request.fullness
+        );
+        const averageInterval = getAverageInterval(scheduleMeasurements);
+        schedule.intervals = scheduleMeasurements;
+        schedule.averageInterval = averageInterval;
+        schedule.accuracy = request.accuracy;
         await scheduleRepository.save(schedule);
         return schedule;
     }

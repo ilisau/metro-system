@@ -14,6 +14,7 @@ This application is a metro train schedule analyzer.
     * [User](#user)
     * [Schedule](#schedule)
     * [ScheduleRequest](#schedulerequest)
+    * [ScheduleMeasurement](#schedulemeasurement)
     * [FlowMeasurement](#flowmeasurement)
     * [ExceptionMessage](#exceptionmessage)
     * [LoginRequest](#loginrequest)
@@ -139,17 +140,35 @@ Creates schedule with provided params.
 {
   "id": 1,
   "authorId": 1,
-  "capacity": 150,
-  "interval": 80
+  "capacity": 300,
+  "averageInterval": 75,
+  "intervals": [
+    {
+      "time": "9:16:0",
+      "took": 240,
+      "left": 60
+    },
+    {
+      "time": "9:16:40",
+      "took": 240,
+      "left": 18
+    },
+    {
+      "time": "9:17:40",
+      "took": 240,
+      "left": 73
+    }
+  ]
 }
 ```
 
-| Field      | Type | Required | Description                         |
-|------------|------|----------|-------------------------------------|
-| `id`       | long | Yes      | Schedule`s ID.                      |
-| `authorId` | long | Yes      | Schedule`s author ID.               |
-| `capacity` | int  | Yes      | Per-minute capacity of train set.   |
-| `interval` | int  | Yes      | Interval between trains in seconds. |
+| Field             | Type                                            | Required | Description                                 |
+|-------------------|-------------------------------------------------|----------|---------------------------------------------|
+| `id`              | long                                            | Yes      | Schedule`s ID.                              |
+| `authorId`        | long                                            | Yes      | Schedule`s author ID.                       |
+| `capacity`        | int                                             | Yes      | Per-minute capacity of train set.           |
+| `averageInterval` | int                                             | Yes      | Average interval between trains in seconds. |
+| `intervals`       | [`ScheduleMeasurement[]`](#schedulemeasurement) | Yes      | Calculated schedule.                        |
 
 ### `ScheduleRequest`
 
@@ -158,6 +177,8 @@ Creates schedule with provided params.
   "id": 1,
   "trains": 5,
   "capacity": 60,
+  "accuracy": 3,
+  "fullness": 0.9,
   "flow": [
     {
       "time": "9:15",
@@ -175,12 +196,30 @@ Creates schedule with provided params.
 }
 ```
 
-| Field      | Type                                    | Required | Description                                                 |
-|------------|-----------------------------------------|----------|-------------------------------------------------------------|
-| `id`       | long                                    | Yes      | ID of the request.                                          |
-| `trains`   | int                                     | Yes      | Amount of train cars.                                       |
-| `capacity` | int                                     | Yes      | Capacity of one train car.                                  |
-| `flow`     | [`FlowMeasurement[]`](#flowmeasurement) | Yes      | Not empty array of flow measurements for a particular time. |
+| Field      | Type                                    | Required | Description                                                                                                        |
+|------------|-----------------------------------------|----------|--------------------------------------------------------------------------------------------------------------------|
+| `id`       | long                                    | Yes      | ID of the request.                                                                                                 |
+| `trains`   | int                                     | Yes      | Amount of train cars.                                                                                              |
+| `capacity` | int                                     | Yes      | Capacity of one train car.                                                                                         |
+| `accuracy` | int                                     | No       | Amount of minute division for scheduling. Default value is 3 (i.e. scheduling for 0, 20 and 40 seconds of minute). |
+| `fullness` | float                                   | No       | Minimal fullness of train set. Default value is 0.9.                                                               |
+| `flow`     | [`FlowMeasurement[]`](#flowmeasurement) | Yes      | Not empty array of flow measurements for a particular time.                                                        |
+
+### `ScheduleMeasurement`
+
+```json
+{
+  "time": "9:15:20",
+  "took": 240,
+  "left": 25
+}
+```
+
+| Field  | Type   | Required | Description                           |
+|--------|--------|----------|---------------------------------------|
+| `time` | string | Yes      | Measurement time.                     |
+| `took` | int    | Yes      | Amount of people taken by this train. |
+| `left` | int    | Yes      | Amount of people left on platform.    |
 
 ### `FlowMeasurement`
 
@@ -191,10 +230,10 @@ Creates schedule with provided params.
 }
 ```
 
-| Field    | Type   | Required | Description                   |
-|----------|--------|----------|-------------------------------|
-| `time`   | string | Yes      | Measurement time.             |
-| `amount` | int    | Yes      | Amount of people on platform. |
+| Field    | Type   | Required | Description                                                    |
+|----------|--------|----------|----------------------------------------------------------------|
+| `time`   | string | Yes      | Measurement time.                                              |
+| `amount` | int    | Yes      | Amount of people coming to platform for one particular minute. |
 
 ### `ExceptionMessage`
 

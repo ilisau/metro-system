@@ -43,6 +43,7 @@ class AuthService {
         await userService.save(user);
     }
 
+    //TODO validate whether it is refresh token
     async refresh(token: string): Promise<LoginResponse> {
         if (tokenService.isValid(token)) {
             const userId: number = <number>tokenService.parseClaims(token).get("userId");
