@@ -67,6 +67,19 @@ Authenticates user.
 | `200 OK`          | [`LoginResponse`](#loginresponse)       | Correct credentials are used.   |
 | `400 Bad Request` | [`ExceptionMessage`](#exceptionmessage) | Incorrect credentials are used. |
 
+### `POST /api/v1/auth/refresh`
+
+Refreshes a pair of tokens.
+
+**Request:** Object with `token` field.
+
+**Response:**
+
+| Code              | Body                                    | Condition                |
+|-------------------|-----------------------------------------|--------------------------|
+| `200 OK`          | [`LoginResponse`](#loginresponse)       | Correct token is used.   |
+| `400 Bad Request` | [`ExceptionMessage`](#exceptionmessage) | Incorrect token is used. |
+
 ### `GET /api/v1/users/:id`
 
 Returns user by its ID.
