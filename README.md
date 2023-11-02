@@ -6,19 +6,20 @@ This application is a metro train schedule analyzer.
 
 * [Features](#features-)
 * [Application](#application)
+* [Schema](#schema)
 * [Endpoints](#endpoints)
-    * [Auth](#post-apiv1authregister)
-    * [User](#get-apiv1usersid)
-    * [Schedule](#post-apiv1schedule)
+  * [Auth](#post-apiv1authregister)
+  * [User](#get-apiv1usersid)
+  * [Schedule](#post-apiv1schedule)
 * [Objects](#objects)
-    * [User](#user)
-    * [Schedule](#schedule)
-    * [ScheduleRequest](#schedulerequest)
-    * [ScheduleMeasurement](#schedulemeasurement)
-    * [FlowMeasurement](#flowmeasurement)
-    * [ExceptionMessage](#exceptionmessage)
-    * [LoginRequest](#loginrequest)
-    * [LoginResponse](#loginresponse)
+  * [User](#user)
+  * [Schedule](#schedule)
+  * [ScheduleRequest](#schedulerequest)
+  * [ScheduleMeasurement](#schedulemeasurement)
+  * [FlowMeasurement](#flowmeasurement)
+  * [ExceptionMessage](#exceptionmessage)
+  * [LoginRequest](#loginrequest)
+  * [LoginResponse](#loginresponse)
 
 ### Features:
 
@@ -27,17 +28,39 @@ This application is a metro train schedule analyzer.
 
 ### Application
 
-This application uses Express, Redis. Passwords are encrypted using BCrypt-10.
+This application uses Express, Redis. Passwords are encrypted using BCrypt.
+To run this application, run
+
+```shell
+docker compose up
+```
 
 **Configs:**
 
 You need to pass next arguments to `.env` file.
 
+* `REDIS_HOST` - host of Redis instance
+* `REDIS_PORT` - port of Redis instance
 * `JWT_SECRET` - BASE_64 encoded secret for JWT tokens
 * `ACCESS_TOKEN_EXPIRATION_TIME` - expiration time of access token in minutes
 * `REFRESH_TOKEN_EXPIRATION_TIME` - expiration time of refresh token in minutes
 
-This application is accessible via REST.
+This application is accessible via REST endpoints.
+
+## Schema
+
+This application uses Redis database.
+
+| Code                   | Body   | Condition                                           |
+|------------------------|--------|-----------------------------------------------------|
+| `users`                | set    | Set of user IDs and usernames.                      |
+| `users:{id}`           | hash   | Hash of user fields (id, name, username, password). |
+| `users:{username}`     | string | User`s ID.                                          |
+| `users:{id}:schedules` | set    | Set of user`s schedule IDs.                         |
+| `schedules`            | set    | Set of schedule IDs.                                |
+| `schedules:{id}`       | string | Stringified JSON of schedule object.                |
+| `tokens:{id}:access`   | string | User`s access token.                                |
+| `tokens:{id}:refresh`  | string | User`s refresh token.                               |
 
 ## Endpoints
 
