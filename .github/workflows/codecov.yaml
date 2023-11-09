@@ -1,6 +1,10 @@
 name: codecov
 
-on: [push, pull_request]
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
 
 jobs:
   run:
@@ -20,3 +24,6 @@ jobs:
         uses: codecov/codecov-action@v4-beta
         env:
           CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+        with:
+          files: ./codecov/clover.xml
+          fail_ci_if_error: false

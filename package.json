@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "ts-node app.ts",
-    "test": "jest --verbose --forceExit ./test"
+    "test": "jest --verbose --forceExit --coverage ./test"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
