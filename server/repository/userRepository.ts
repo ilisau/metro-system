@@ -1,47 +1,41 @@
-import Redis from "ioredis";
 import User from "../model/User";
-import {getRedis, userKey, usersKey} from "../config"
+import {redis, userKey, usersKey} from "../config"
+import {user} from "../model/factory";
 
 class UserRepository {
 
-    #client: Redis;
-
-    constructor() {
-        this.#client = getRedis();
-    }
-
     async getById(id: number): Promise<User> {
-        if (await this.#client.sismember(usersKey(), id)) {
-            const hashPairs = await this.#client.hgetall(userKey(id));
-            return hashPairs as unknown as User;
+        if (await redis.sismember(usersKey(), id)) {
+            const hashPairs = await redis.hgetall(userKey(id));
+            return user(hashPairs);
         } else {
             throw new Error("User not found.");
         }
     }
 
     async getByUsername(username: string): Promise<User> {
-        if (await this.#client.sismember(usersKey(), username)) {
-            const userId = await this.#client.get(userKey(username));
-            const hashPairs = await this.#client.hgetall(userKey(userId!));
-            return hashPairs as unknown as User;
+        if (await redis.sismember(usersKey(), username)) {
+            const userId = await redis.get(userKey(username));
+            const hashPairs = await redis.hgetall(userKey(userId!));
+            return user(hashPairs);
         } else {
             throw new Error("User not found.");
         }
     }
 
     async exists(key: number | string): Promise<boolean> {
-        const exists = await this.#client.sismember(usersKey(), key);
+        const exists = await redis.sismember(usersKey(), key);
         return !!exists;
     }
 
     async save(user: User) {
-        user.id = await this.#client.scard(usersKey()) / 2 + 1;
-        await this.#client.sadd(usersKey(), user.id);
-        await this.#client.sadd(usersKey(), user.username);
-        await this.#client.set(userKey(user.username), user.id);
-        await this.#client.hset(userKey(user.id), user);
+        user.id = await redis.scard(usersKey()) / 2 + 1;
+        await redis.sadd(usersKey(), user.id);
+        await redis.sadd(usersKey(), user.username);
+        await redis.set(userKey(user.username), user.id);
+        await redis.hset(userKey(user.id), user);
     }
 
 }
 
-export default new UserRepository();
+export const userRepository = new UserRepository();

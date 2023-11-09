@@ -1,6 +1,6 @@
 import express from "express";
 import User from "../../model/User.js";
-import authService from "../../service/authService.js";
+import authService from "../../service/authService";
 import ExceptionMessage from "../../model/ExceptionMessage";
 import {validateUser} from "../../security/requestValidators";
 

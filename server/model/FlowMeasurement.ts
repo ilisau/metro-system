@@ -1,4 +1,4 @@
-export class FlowMeasurement {
+export default class FlowMeasurement {
 
     time: string;
     amount: number;

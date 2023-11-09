@@ -1,6 +1,5 @@
 import User from "../model/User";
-import userRepository from "../repository/userRepository";
-
+import {userRepository} from "../repository/userRepository";
 import bcrypt from 'bcrypt';
 
 class UserService {

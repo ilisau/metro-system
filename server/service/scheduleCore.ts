@@ -1,5 +1,5 @@
-import {FlowMeasurement} from "../model/FlowMeasurement";
-import {ScheduleMeasurement} from "../model/ScheduleMeasurement";
+import FlowMeasurement from "../model/FlowMeasurement";
+import ScheduleMeasurement from "../model/ScheduleMeasurement";
 
 function interpolateArray(data: FlowMeasurement[], interval: number) {
     const newData = [];

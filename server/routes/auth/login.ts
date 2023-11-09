@@ -1,5 +1,5 @@
 import express from "express";
-import authService from "../../service/authService.js";
+import authService from "../../service/authService";
 import LoginRequest from "../../model/LoginRequest";
 import ExceptionMessage from "../../model/ExceptionMessage";
 import {validateLoginRequest} from "../../security/requestValidators";

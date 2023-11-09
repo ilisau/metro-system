@@ -4,11 +4,11 @@ const crypto = require('crypto');
 
 class JWT {
 
-    #secret: string;
+    private secret: string;
 
     constructor() {
         dotenv.config();
-        this.#secret = String(process.env.JWT_SECRET);
+        this.secret = String(process.env.JWT_SECRET);
     }
 
     sign(payload: Object, expiration: number): string {
@@ -64,7 +64,7 @@ class JWT {
     }
 
     #signData(data: string): string {
-        return crypto.createHmac('sha256', this.#secret).update(data).digest('base64')
+        return crypto.createHmac('sha256', this.secret).update(data).digest('base64')
             .replace(/=/g, '')
             .replace(/\+/g, '-')
             .replace(/\//g, '_');

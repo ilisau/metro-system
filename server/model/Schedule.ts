@@ -1,6 +1,6 @@
-import {ScheduleMeasurement} from "./ScheduleMeasurement";
+import ScheduleMeasurement from "./ScheduleMeasurement";
 
-export class Schedule {
+export default class Schedule {
 
     id: number;
     authorId: number;

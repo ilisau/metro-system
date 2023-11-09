@@ -1,10 +1,10 @@
 import User from "../model/User";
-import {LoginResponse} from "../model/LoginResponse";
+import LoginResponse from "../model/LoginResponse";
 import LoginRequest from "../model/LoginRequest";
 import tokenService from "./tokenService";
 import userService from "./userService";
-import tokenRepository from "../repository/tokenRepository";
 import bcrypt from "bcrypt";
+import tokenRepository from "../repository/tokenRepository";
 
 class AuthService {
 

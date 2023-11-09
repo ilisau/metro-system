@@ -1,6 +1,6 @@
-import {FlowMeasurement} from "./FlowMeasurement";
+import FlowMeasurement from "./FlowMeasurement";
 
-export class ScheduleRequest {
+export default class ScheduleRequest {
 
     id: number | undefined;
     trains: number;

@@ -1,7 +1,7 @@
 import ExceptionMessage from "../model/ExceptionMessage";
 import User from "../model/User";
 import LoginRequest from "../model/LoginRequest";
-import {ScheduleRequest} from "../model/ScheduleRequest";
+import ScheduleRequest from "../model/ScheduleRequest";
 
 function isEmail(email: string) {
     const exp = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/g;
