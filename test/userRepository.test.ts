@@ -13,11 +13,11 @@ describe("User repository tests", () => {
 
     beforeAll(async () => {
         await redisContainer.init();
-    });
+    }, 60000);
 
     afterAll(async () => {
         await redisContainer.stop();
-    });
+    }, 60000);
 
     it("getNotExistingById", async () => {
         await expect(async () => {
