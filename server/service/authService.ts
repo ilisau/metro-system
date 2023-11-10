@@ -12,8 +12,8 @@ class AuthService {
         //TODO get tokens from redis
         try {
             const foundUser = await userService.getByUsername(request.username);
-            console.log("user found")
             const result = await new Promise((resolve, reject) => {
+                console.log(request.password, foundUser.password!)
                 bcrypt.compare(request.password, foundUser.password!, (err: Error | undefined, result) => {
                     if (err) {
                         reject(err);
@@ -23,7 +23,6 @@ class AuthService {
                 });
             });
             if (!result) {
-                console.log("passwords are incorrect")
                 throw new Error("Invalid credentials.");
             } else {
                 const response = new LoginResponse(

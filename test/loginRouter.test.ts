@@ -37,8 +37,7 @@ describe("Login router tests", () => {
         let res = await supertest(server)
             .post('/api/v1/auth/login')
             .send(validRequest)
-            // .expect(200);
-        console.log(res.body)
+            .expect(200);
     });
 
     it('not existing user login request', async () => {
