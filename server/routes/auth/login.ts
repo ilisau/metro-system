@@ -12,7 +12,7 @@ router.post('/login', validateLoginRequest(), async function (req: any, res, nex
         const loginResponse = await authService.login(data);
         res.send(loginResponse);
     } catch (e: any) {
-        res.status(404);
+        res.status(400);
         res.send(new ExceptionMessage(e.message));
     }
 });

@@ -29,16 +29,16 @@ describe("Login router tests", () => {
     }, 60000);
 
     it('valid login request', async () => {
-        console.log(await userRepository.exists("bob@email.com"))
         const validRequest = {
             username: 'bob@email.com',
             password: 'bob',
         };
 
-        await supertest(server)
+        let res = await supertest(server)
             .post('/api/v1/auth/login')
             .send(validRequest)
             .expect(200);
+        console.log(res.body)
     });
 
     it('not existing user login request', async () => {
@@ -50,7 +50,7 @@ describe("Login router tests", () => {
         const response = await supertest(server)
             .post('/api/v1/auth/login')
             .send(validRequest)
-            .expect(404);
+            .expect(400);
 
         expect(response.body).toEqual({
             message: 'Invalid credentials.',
