@@ -5,6 +5,7 @@ import tokenService from "./tokenService";
 import userService from "./userService";
 import bcrypt from "bcrypt";
 import tokenRepository from "../repository/tokenRepository";
+import util from "util";
 
 class AuthService {
 
@@ -12,16 +13,7 @@ class AuthService {
         //TODO get tokens from redis
         try {
             const foundUser = await userService.getByUsername(request.username);
-            const result = await new Promise((resolve, reject) => {
-                console.log(request.password, foundUser.password!)
-                bcrypt.compare(request.password, foundUser.password!, (err: Error | undefined, result) => {
-                    if (err) {
-                        reject(err);
-                    } else {
-                        resolve(result);
-                    }
-                });
-            });
+            const result = util.promisify(bcrypt.compare)(request.password, foundUser.password!);
             if (!result) {
                 throw new Error("Invalid credentials.");
             } else {
