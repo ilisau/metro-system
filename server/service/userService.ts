@@ -1,6 +1,7 @@
 import User from "../model/User";
 import {userRepository} from "../repository/userRepository";
 import bcrypt from 'bcrypt';
+import * as util from "util";
 
 class UserService {
 
@@ -17,10 +18,8 @@ class UserService {
     }
 
     async save(user: User) {
-        bcrypt.hash(user.password!, 10, async function (err: Error | undefined, hash: string) {
-            user.password = hash;
-            await userRepository.save(user);
-        });
+        user.password = await util.promisify(bcrypt.hash)(user.password!, 10);
+        await userRepository.save(user);
     }
 
 }

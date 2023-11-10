@@ -1,5 +1,7 @@
 # Metro system
 
+[![codecov](https://codecov.io/gh/ilisau/metro-system/graph/badge.svg?token=4XwdncfuRX)](https://codecov.io/gh/ilisau/metro-system)
+
 This application is a metro train schedule analyzer.
 
 ### Content
