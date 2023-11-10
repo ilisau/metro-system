@@ -1,26 +1,13 @@
 import LoginResponse from "../model/LoginResponse";
-import Redis from "ioredis";
-import dotenv from "dotenv";
 import tokenKey, {redis} from "../config";
 
 class TokenRepository {
 
-    private client: Redis;
-    private accessExpiration: number;
-    private refreshExpiration: number;
-
-    constructor() {
-        dotenv.config();
-        this.client = redis;
-        this.accessExpiration = Number(process.env.ACCESS_TOKEN_EXPIRATION_TIME);
-        this.refreshExpiration = Number(process.env.REFRESH_TOKEN_EXPIRATION_TIME);
-    }
-
     async save(userId: number, tokens: LoginResponse) {
-        await this.client.set(`${tokenKey(userId)}:access`, tokens.access);
-        await this.client.expire(`${tokenKey(userId)}:access`, 60 * this.accessExpiration);
-        await this.client.set(`${tokenKey(userId)}:refresh`, tokens.refresh);
-        await this.client.expire(`${tokenKey(userId)}:refresh`, 60 * this.refreshExpiration);
+        await redis.set(`${tokenKey(userId)}:access`, tokens.access);
+        await redis.expire(`${tokenKey(userId)}:access`, 60 * Number(process.env.ACCESS_TOKEN_EXPIRATION_TIME));
+        await redis.set(`${tokenKey(userId)}:refresh`, tokens.refresh);
+        await redis.expire(`${tokenKey(userId)}:refresh`, 60 * Number(process.env.REFRESH_TOKEN_EXPIRATION_TIME));
     }
 
 }

@@ -82,4 +82,15 @@ describe("User repository tests", () => {
         expect(result)
             .toBeTruthy();
     });
+
+    it("save", async () => {
+        let user = new User(undefined, "user", "username", "password");
+        await userRepository.save(user);
+
+        let result = await userRepository.getByUsername(user.username);
+        expect(result.username)
+            .toBe(user.username);
+        expect(result.password)
+            .toBe(user.password);
+    });
 });
