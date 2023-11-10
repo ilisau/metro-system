@@ -5,6 +5,8 @@ import RedisContainer from "./redisContainer";
 import {userRepository} from "../server/repository/userRepository";
 import User from "../server/model/User";
 
+let server = app.listen();
+
 describe("Login router tests", () => {
 
     let redisContainer = new RedisContainer();
@@ -22,6 +24,7 @@ describe("Login router tests", () => {
 
     afterAll(async () => {
         await redisContainer.stop();
+        server.close();
     }, 60000);
 
     it('valid login request', async () => {
@@ -30,7 +33,7 @@ describe("Login router tests", () => {
             password: 'bob',
         };
 
-        await supertest(app)
+        await supertest(server)
             .post('/api/v1/auth/login')
             .send(validRequest)
             .expect(200);
@@ -42,7 +45,7 @@ describe("Login router tests", () => {
             password: 'alice',
         };
 
-        const response = await supertest(app)
+        const response = await supertest(server)
             .post('/api/v1/auth/login')
             .send(validRequest)
             .expect(404);
@@ -59,7 +62,7 @@ describe("Login router tests", () => {
             password: '',
         };
 
-        const response = await supertest(app)
+        const response = await supertest(server)
             .post('/api/v1/auth/login')
             .send(invalidRequest)
             .expect(400);

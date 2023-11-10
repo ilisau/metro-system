@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "start": "ts-node app.ts",
+    "start": "ts-node server.ts",
     "test": "jest --verbose --forceExit --coverage ./test"
   },
   "dependencies": {

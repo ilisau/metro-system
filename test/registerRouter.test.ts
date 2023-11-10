@@ -1,9 +1,11 @@
 import {afterAll, beforeAll, describe, it} from "@jest/globals";
 import supertest from 'supertest'
-import {app} from "../app";
 import RedisContainer from "./redisContainer";
 import {userRepository} from "../server/repository/userRepository";
 import User from "../server/model/User";
+import {app} from "../app";
+
+let server = app.listen();
 
 describe("Register router tests", () => {
 
@@ -15,6 +17,7 @@ describe("Register router tests", () => {
 
     afterAll(async () => {
         await redisContainer.stop();
+        server.close();
     }, 60000);
 
     it('valid register request', async () => {
@@ -24,7 +27,7 @@ describe("Register router tests", () => {
             password: 'bobbobbob',
         };
 
-        await supertest(app)
+        await supertest(server)
             .post('/api/v1/auth/register')
             .send(validRequest)
             .expect(201);
@@ -44,7 +47,7 @@ describe("Register router tests", () => {
             password: 'bobbobbob',
         };
 
-        const response = await supertest(app)
+        const response = await supertest(server)
             .post('/api/v1/auth/register')
             .send(validRequest)
             .expect(400);
@@ -62,7 +65,7 @@ describe("Register router tests", () => {
             password: 'short',
         };
 
-        const response = await supertest(app)
+        const response = await supertest(server)
             .post('/api/v1/auth/register')
             .send(invalidUser)
             .expect(400);
