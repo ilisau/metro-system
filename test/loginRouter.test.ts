@@ -29,6 +29,7 @@ describe("Login router tests", () => {
     }, 60000);
 
     it('valid login request', async () => {
+        console.log(await userRepository.exists("bob@email.com"))
         const validRequest = {
             username: 'bob@email.com',
             password: 'bob',
