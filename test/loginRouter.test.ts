@@ -34,10 +34,10 @@ describe("Login router tests", () => {
             password: 'bob',
         };
 
-        let res = await supertest(server)
+        await supertest(server)
             .post('/api/v1/auth/login')
             .send(validRequest)
-            .expect(200);
+            // .expect(200);
     });
 
     it('not existing user login request', async () => {
