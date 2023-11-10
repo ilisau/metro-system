@@ -8,7 +8,7 @@ import {router as schedulesRouter} from "./server/routes/schedule/index";
 import {router as scheduleRouter} from "./server/routes/schedule/[id]/index";
 import authorizationMiddleware from "./server/security/authorizationMiddleware";
 
-const app = express()
+export const app = express()
 const port = 3000
 
 app.use(express.json());
