@@ -24,6 +24,7 @@ describe("Login router tests", () => {
 
     afterAll(async () => {
         await redisContainer.stop();
+        await redisContainer.flushAll();
         server.close();
     }, 60000);
 
