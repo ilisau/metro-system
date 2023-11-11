@@ -20,7 +20,6 @@ class AuthService {
                 await tokenService.accessToken(foundUser.username),
                 await tokenService.refreshToken(foundUser.username)
             );
-            console.log(response)
             await tokenRepository.save(foundUser.id!, response);
             return response;
         } catch (e: any) {
