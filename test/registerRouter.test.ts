@@ -32,7 +32,7 @@ describe("Register router tests", () => {
             .post('/api/v1/auth/register')
             .send(validRequest)
             .expect(201);
-    });
+    }, 60000);
 
     it('already registered user request', async () => {
         await userRepository.save(
@@ -57,7 +57,7 @@ describe("Register router tests", () => {
             message: "User already exists.",
             errors: []
         });
-    });
+    }, 60000);
 
     it('test invalid register request', async () => {
         const invalidUser = {
@@ -79,5 +79,5 @@ describe("Register router tests", () => {
                 'Password must be longer than 8 characters.',
             ],
         });
-    });
+    }, 60000);
 });

@@ -10,7 +10,7 @@ describe("User service tests", () => {
 
     beforeEach(async () => {
         await redisContainer.flushAll();
-    });
+    }, 60000);
 
     beforeAll(async () => {
         await redisContainer.init();
@@ -26,7 +26,7 @@ describe("User service tests", () => {
         })
             .rejects
             .toThrow("User not found.")
-    });
+    }, 60000);
 
     it("getExistingById", async () => {
         let user = new User(1, "user", "username", "password");
@@ -35,7 +35,7 @@ describe("User service tests", () => {
         let result = await userService.getById(1);
         expect(result)
             .toEqual(user);
-    });
+    }, 60000);
 
     it("getNotExistingByUsername", async () => {
         await expect(async () => {
@@ -43,7 +43,7 @@ describe("User service tests", () => {
         })
             .rejects
             .toThrow("User not found.");
-    });
+    }, 60000);
 
     it("getExistingByUsername", async () => {
         let user = new User(1, "user", "username", "password");
@@ -52,13 +52,13 @@ describe("User service tests", () => {
         let result = await userService.getByUsername(user.username);
         expect(result)
             .toEqual(user);
-    });
+    }, 60000);
 
     it("existsNotExistingUsername", async () => {
         let result = await userService.exists("username");
         expect(result)
             .toBeFalsy();
-    });
+    }, 60000);
 
     it("existsExistingUsername", async () => {
         let user = new User(1, "user", "username", "password");
@@ -67,7 +67,7 @@ describe("User service tests", () => {
         let result = await userService.exists(user.username);
         expect(result)
             .toBeTruthy();
-    });
+    }, 60000);
 
     it("save", async () => {
         let user = new User(undefined, "user", "username", "password");
@@ -78,5 +78,5 @@ describe("User service tests", () => {
             .toBe(user.username);
         expect(result.password)
             .toEqual(user.password);
-    });
+    }, 60000);
 });

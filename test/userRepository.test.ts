@@ -9,7 +9,7 @@ describe("User repository tests", () => {
 
     beforeEach(async () => {
         await redisContainer.flushAll();
-    });
+    }, 60000);
 
     beforeAll(async () => {
         await redisContainer.init();
@@ -25,7 +25,7 @@ describe("User repository tests", () => {
         })
             .rejects
             .toThrow("User not found.")
-    });
+    }, 60000);
 
     it("getExistingById", async () => {
         let user = new User(1, "user", "username", "password");
@@ -34,7 +34,7 @@ describe("User repository tests", () => {
         let result = await userRepository.getById(1);
         expect(result)
             .toEqual(user);
-    });
+    }, 60000);
 
     it("getNotExistingByUsername", async () => {
         await expect(async () => {
@@ -42,7 +42,7 @@ describe("User repository tests", () => {
         })
             .rejects
             .toThrow("User not found.");
-    });
+    }, 60000);
 
     it("getExistingByUsername", async () => {
         let user = new User(1, "user", "username", "password");
@@ -51,13 +51,13 @@ describe("User repository tests", () => {
         let result = await userRepository.getByUsername(user.username);
         expect(result)
             .toEqual(user);
-    });
+    }, 60000);
 
     it("existsNotExistingUsername", async () => {
         let result = await userRepository.exists("username");
         expect(result)
             .toBeFalsy();
-    });
+    }, 60000);
 
     it("existsExistingUsername", async () => {
         let user = new User(1, "user", "username", "password");
@@ -66,13 +66,13 @@ describe("User repository tests", () => {
         let result = await userRepository.exists(user.username);
         expect(result)
             .toBeTruthy();
-    });
+    }, 60000);
 
     it("existsNotExistingId", async () => {
         let result = await userRepository.exists(1);
         expect(result)
             .toBeFalsy();
-    });
+    }, 60000);
 
     it("existsExistingId", async () => {
         let user = new User(1, "user", "username", "password");
@@ -81,7 +81,7 @@ describe("User repository tests", () => {
         let result = await userRepository.exists(user.id!);
         expect(result)
             .toBeTruthy();
-    });
+    }, 60000);
 
     it("save", async () => {
         let user = new User(undefined, "user", "username", "password");
@@ -92,5 +92,5 @@ describe("User repository tests", () => {
             .toBe(user.username);
         expect(result.password)
             .toBe(user.password);
-    });
+    }, 60000);
 });

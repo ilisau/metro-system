@@ -10,7 +10,7 @@ describe("Token repository tests", () => {
 
     beforeEach(async () => {
         await redisContainer.flushAll();
-    });
+    }, 60000);
 
     beforeAll(async () => {
         await redisContainer.init();

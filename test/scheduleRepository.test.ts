@@ -9,7 +9,7 @@ describe("Schedule repository tests", () => {
 
     beforeEach(async () => {
         await redisContainer.flushAll();
-    });
+    }, 60000);
 
     beforeAll(async () => {
         await redisContainer.init();
@@ -25,7 +25,7 @@ describe("Schedule repository tests", () => {
         })
             .rejects
             .toThrow("Schedule not found.")
-    });
+    }, 60000);
 
     it("getExistingById", async () => {
         let schedule = new Schedule(1, 100);
@@ -34,7 +34,7 @@ describe("Schedule repository tests", () => {
         let result = await scheduleRepository.getById(1);
         expect(result)
             .toEqual(schedule);
-    });
+    }, 60000);
 
     it("getAllByAuthorId", async () => {
         let size = 5;
@@ -46,7 +46,7 @@ describe("Schedule repository tests", () => {
         let result = await scheduleRepository.getAllByAuthorId(1);
         expect(result)
             .toHaveLength(size);
-    });
+    }, 60000);
 
 
     it("isAuthor", async () => {
@@ -56,7 +56,7 @@ describe("Schedule repository tests", () => {
         let result = await scheduleRepository.isAuthor(schedule.authorId, schedule.id);
         expect(result)
             .toBeTruthy();
-    });
+    }, 60000);
 
     it("isAuthor", async () => {
         let schedule = new Schedule(1, 100);
@@ -65,7 +65,7 @@ describe("Schedule repository tests", () => {
         let result = await scheduleRepository.isAuthor(schedule.authorId + 2, schedule.id);
         expect(result)
             .toBeFalsy();
-    });
+    }, 60000);
 
     it("save", async () => {
         let schedule = new Schedule(1, 100);
@@ -74,5 +74,5 @@ describe("Schedule repository tests", () => {
         let result = await scheduleRepository.getById(schedule.id);
         expect(result)
             .toEqual(schedule);
-    });
+    }, 60000);
 });

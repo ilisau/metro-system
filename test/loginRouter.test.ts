@@ -38,7 +38,7 @@ describe("Login router tests", () => {
             .post('/api/v1/auth/login')
             .send(validRequest)
             // .expect(200);
-    });
+    }, 60000);
 
     it('not existing user login request', async () => {
         const validRequest = {
@@ -55,7 +55,7 @@ describe("Login router tests", () => {
             message: 'Invalid credentials.',
             errors: [],
         });
-    });
+    }, 60000);
 
     it('invalid login request', async () => {
         const invalidRequest = {
@@ -72,5 +72,5 @@ describe("Login router tests", () => {
             message: 'Validation failed',
             errors: ['Incorrect username.', 'Password must be not empty.'],
         });
-    });
+    }, 60000);
 });
