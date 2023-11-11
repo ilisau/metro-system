@@ -10,21 +10,23 @@ import util from "util";
 class AuthService {
 
     async login(request: LoginRequest): Promise<LoginResponse> {
-        //TODO get tokens from redis
         try {
             const foundUser = await userService.getByUsername(request.username);
+            console.log(foundUser)
             const result = await util.promisify(bcrypt.compare)(request.password, foundUser.password!);
+            console.log(result)
             if (!result) {
+                console.log("result is incorrect")
                 throw new Error("Invalid credentials.");
-            } else {
-                const response = new LoginResponse(
-                    await tokenService.accessToken(foundUser.username),
-                    await tokenService.refreshToken(foundUser.username)
-                );
-                await tokenRepository.save(foundUser.id!, response);
-                return response;
             }
+            const response = new LoginResponse(
+                await tokenService.accessToken(foundUser.username),
+                await tokenService.refreshToken(foundUser.username)
+            );
+            await tokenRepository.save(foundUser.id!, response);
+            return response;
         } catch (e: any) {
+            console.log(e.message)
             throw new Error("Invalid credentials.");
         }
     }
