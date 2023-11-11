@@ -1,6 +1,6 @@
-import {FlowMeasurement} from "./FlowMeasurement";
+import FlowMeasurement from "./FlowMeasurement";
 
-export class ScheduleRequest {
+export default class ScheduleRequest {
 
     id: number | undefined;
     trains: number;
@@ -10,7 +10,7 @@ export class ScheduleRequest {
     flow: FlowMeasurement[];
     authorId: number;
 
-    constructor(id: number, trains: number, capacity: number, flow: FlowMeasurement[]) {
+    constructor(id: number | undefined, trains: number, capacity: number, flow: FlowMeasurement[]) {
         this.id = id;
         this.trains = trains;
         this.capacity = capacity;

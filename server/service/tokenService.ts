@@ -1,29 +1,29 @@
 import Claims from "../security/Claims";
 import dotenv from "dotenv";
-import userService from "./userService";
 import jwt from "../security/JWT"
+import userService from "./userService";
 
 class TokenService {
 
-    #accessExpiration: number;
-    #refreshExpiration: number;
+    private accessExpiration: number;
+    private refreshExpiration: number;
 
     constructor() {
         dotenv.config();
-        this.#accessExpiration = Number(process.env.ACCESS_TOKEN_EXPIRATION_TIME);
-        this.#refreshExpiration = Number(process.env.REFRESH_TOKEN_EXPIRATION_TIME);
+        this.accessExpiration = Number(process.env.ACCESS_TOKEN_EXPIRATION_TIME);
+        this.refreshExpiration = Number(process.env.REFRESH_TOKEN_EXPIRATION_TIME);
     }
 
     async accessToken(username: string): Promise<string> {
         const user = await userService.getByUsername(username);
         const payload = {type: "ACCESS", sub: user.id};
-        return jwt.sign(payload, this.#accessExpiration * 60);
+        return jwt.sign(payload, this.accessExpiration * 60);
     }
 
     async refreshToken(username: string): Promise<string> {
         const user = await userService.getByUsername(username);
         const payload = {type: "REFRESH", sub: user.id};
-        return jwt.sign(payload, this.#refreshExpiration * 60);
+        return jwt.sign(payload, this.refreshExpiration * 60);
     }
 
     isValid(token: string): boolean {

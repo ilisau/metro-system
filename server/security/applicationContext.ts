@@ -3,7 +3,7 @@ import userService from "../service/userService";
 
 class ApplicationContext {
 
-    #principal?: User
+    principal?: User
 
     //TODO implement for every request its own session
     constructor() {
@@ -11,18 +11,14 @@ class ApplicationContext {
 
     async setPrincipal(id: number) {
         try {
-            this.#principal = await userService.getById(id);
+            this.principal = await userService.getById(id);
         } catch (e: any) {
-            this.#principal = undefined;
+            this.principal = undefined;
         }
     }
 
-    get principal(): undefined | User {
-        return this.#principal;
-    }
-
     get authorized(): boolean {
-        return this.#principal !== undefined;
+        return this.principal !== undefined;
     }
 
 }

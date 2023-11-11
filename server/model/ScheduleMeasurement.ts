@@ -1,4 +1,4 @@
-export class ScheduleMeasurement {
+export default class ScheduleMeasurement {
 
     time: string;
     took: number;

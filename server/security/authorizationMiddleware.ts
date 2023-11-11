@@ -7,7 +7,7 @@ const authMiddleware = async (req: any, res: any, next: any) => {
         const token = authorizationHeader.split(' ')[1];
         if (tokenService.isValid(token)) {
             const claims = tokenService.parseClaims(token);
-            const userId = <number>claims.get("userId");
+            const userId = <number>claims.get("sub");
             await applicationContext.setPrincipal(userId);
         }
     }

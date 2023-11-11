@@ -1,4 +1,4 @@
-export class LoginResponse {
+export default class LoginResponse {
 
     access: string;
     refresh: string;

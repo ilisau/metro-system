@@ -1,7 +1,7 @@
-import {Schedule} from "../model/Schedule";
-import {ScheduleRequest} from "../model/ScheduleRequest";
-import scheduleRepository from "../repository/scheduleRepository";
+import Schedule from "../model/Schedule";
+import ScheduleRequest from "../model/ScheduleRequest";
 import {generateSchedule, getAverageInterval} from "./scheduleCore";
+import {scheduleRepository} from "../repository/scheduleRepository";
 
 class ScheduleService {
 

@@ -1,6 +1,6 @@
 import express from "express";
 import scheduleService from "../../service/scheduleService"
-import {ScheduleRequest} from "../../model/ScheduleRequest";
+import ScheduleRequest from "../../model/ScheduleRequest";
 import {validateAuthorization} from "../../security/permissionValidator";
 import applicationContext from "../../security/applicationContext";
 import {validateScheduleRequest} from "../../security/requestValidators";

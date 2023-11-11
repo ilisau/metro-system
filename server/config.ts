@@ -3,12 +3,14 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-export function getRedis(): Redis {
-    return new Redis(
-        Number(process.env.REDIS_PORT),
-        String(process.env.REDIS_HOST),
-        {}
-    );
+export let redis = new Redis(
+    Number(process.env.REDIS_PORT),
+    String(process.env.REDIS_HOST),
+    {}
+);
+
+export function setRedis(client: Redis) {
+    redis = client
 }
 
 export function usersKey() {
@@ -31,6 +33,6 @@ export function userSchedulesKey(id: number) {
     return `users:${id}:schedules`;
 }
 
-export function tokenKey(id: number) {
+export default function tokenKey(id: number) {
     return `tokens:${id}`;
 }
