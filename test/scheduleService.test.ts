@@ -1,6 +1,6 @@
 import {afterAll, beforeAll, beforeEach, describe, expect, it} from "@jest/globals";
 import RedisContainer from "./redisContainer";
-import scheduleRepository from "../server/repository/scheduleRepository";
+import {scheduleRepository} from "../server/repository/scheduleRepository";
 import Schedule from "../server/model/Schedule";
 import scheduleService from "../server/service/scheduleService";
 

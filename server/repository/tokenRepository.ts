@@ -9,15 +9,12 @@ class TokenRepository {
     }
 
     async save(userId: number, tokens: LoginResponse) {
-        console.log(Number(process.env.ACCESS_TOKEN_EXPIRATION_TIME))
-        console.log(Number(process.env.REFRESH_TOKEN_EXPIRATION_TIME))
         await redis.set(`${tokenKey(userId)}:access`, tokens.access);
         await redis.expire(`${tokenKey(userId)}:access`, 60 * Number(process.env.ACCESS_TOKEN_EXPIRATION_TIME));
         await redis.set(`${tokenKey(userId)}:refresh`, tokens.refresh);
         await redis.expire(`${tokenKey(userId)}:refresh`, 60 * Number(process.env.REFRESH_TOKEN_EXPIRATION_TIME));
-        console.log("tokens saved");
     }
 
 }
 
-export default new TokenRepository();
+export const tokenRepository = new TokenRepository();

@@ -1,6 +1,6 @@
 import {afterAll, beforeAll, beforeEach, describe, expect, it} from "@jest/globals";
 import RedisContainer from "./redisContainer";
-import tokenRepository from "../server/repository/tokenRepository";
+import {tokenRepository} from "../server/repository/tokenRepository";
 import LoginResponse from "../server/model/LoginResponse";
 import tokenKey from "../server/config";
 

@@ -4,8 +4,8 @@ import LoginRequest from "../model/LoginRequest";
 import tokenService from "./tokenService";
 import userService from "./userService";
 import bcrypt from "bcrypt";
-import tokenRepository from "../repository/tokenRepository";
 import util from "util";
+import {tokenRepository} from "../repository/tokenRepository";
 
 class AuthService {
 
@@ -23,7 +23,6 @@ class AuthService {
             await tokenRepository.save(foundUser.id!, response);
             return response;
         } catch (e: any) {
-            console.log(e.message)
             throw new Error("Invalid credentials.");
         }
     }
@@ -35,9 +34,8 @@ class AuthService {
         await userService.save(user);
     }
 
-    //TODO validate whether it is refresh token
     async refresh(token: string): Promise<LoginResponse> {
-        if (tokenService.isValid(token)) {
+        if (tokenService.isValid(token) && tokenService.parseClaims(token).get("type") === "REFRESH") {
             const userId: number = <number>tokenService.parseClaims(token).get("sub");
             const foundUser = await userService.getById(userId);
             const response = new LoginResponse(

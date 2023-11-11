@@ -35,4 +35,4 @@ class ScheduleRepository {
 
 }
 
-export default new ScheduleRepository();
+export const scheduleRepository = new ScheduleRepository();
