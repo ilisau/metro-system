@@ -12,17 +12,15 @@ class AuthService {
     async login(request: LoginRequest): Promise<LoginResponse> {
         try {
             const foundUser = await userService.getByUsername(request.username);
-            console.log(foundUser)
             const result = await util.promisify(bcrypt.compare)(request.password, foundUser.password!);
-            console.log(result)
             if (!result) {
-                console.log("result is incorrect")
                 throw new Error("Invalid credentials.");
             }
             const response = new LoginResponse(
                 await tokenService.accessToken(foundUser.username),
                 await tokenService.refreshToken(foundUser.username)
             );
+            console.log(response)
             await tokenRepository.save(foundUser.id!, response);
             return response;
         } catch (e: any) {

@@ -1,7 +1,12 @@
 import LoginResponse from "../model/LoginResponse";
 import tokenKey, {redis} from "../config";
+import dotenv from "dotenv";
 
 class TokenRepository {
+
+    constructor() {
+        dotenv.config();
+    }
 
     async save(userId: number, tokens: LoginResponse) {
         await redis.set(`${tokenKey(userId)}:access`, tokens.access);
