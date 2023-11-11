@@ -13,7 +13,7 @@ class AuthService {
         //TODO get tokens from redis
         try {
             const foundUser = await userService.getByUsername(request.username);
-            const result = util.promisify(bcrypt.compare)(request.password, foundUser.password!);
+            const result = await util.promisify(bcrypt.compare)(request.password, foundUser.password!);
             if (!result) {
                 throw new Error("Invalid credentials.");
             } else {
@@ -39,7 +39,7 @@ class AuthService {
     //TODO validate whether it is refresh token
     async refresh(token: string): Promise<LoginResponse> {
         if (tokenService.isValid(token)) {
-            const userId: number = <number>tokenService.parseClaims(token).get("userId");
+            const userId: number = <number>tokenService.parseClaims(token).get("sub");
             const foundUser = await userService.getById(userId);
             const response = new LoginResponse(
                 await tokenService.accessToken(foundUser.username),
