@@ -17,12 +17,14 @@ class TokenService {
     async accessToken(username: string): Promise<string> {
         const user = await userService.getByUsername(username);
         const payload = {type: "ACCESS", sub: user.id};
+        console.log(user, this.accessExpiration)
         return jwt.sign(payload, this.accessExpiration * 60);
     }
 
     async refreshToken(username: string): Promise<string> {
         const user = await userService.getByUsername(username);
         const payload = {type: "REFRESH", sub: user.id};
+        console.log(user, this.refreshExpiration)
         return jwt.sign(payload, this.refreshExpiration * 60);
     }
 
