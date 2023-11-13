@@ -9,7 +9,11 @@ const authMiddleware = async (req: any, res: any, next: any) => {
             const claims = tokenService.parseClaims(token);
             const userId = <number>claims.get("sub");
             await applicationContext.setPrincipal(userId);
+        } else {
+            applicationContext.clear();
         }
+    } else {
+        applicationContext.clear();
     }
     next();
 };
