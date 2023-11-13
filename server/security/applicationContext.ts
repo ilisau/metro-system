@@ -17,6 +17,10 @@ class ApplicationContext {
         }
     }
 
+    clear() {
+        this.principal = undefined;
+    }
+
     get authorized(): boolean {
         return this.principal !== undefined;
     }

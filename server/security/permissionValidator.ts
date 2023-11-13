@@ -28,9 +28,9 @@ export function validatePrincipal() {
 }
 
 export function validateScheduleAccess() {
-    return (req: any, res: any, next: any) => {
+    return async (req: any, res: any, next: any) => {
         const id = Number.parseInt(req.params.id);
-        const isAuthor = scheduleService.isAuthor(Number(applicationContext.principal?.id), id);
+        const isAuthor = await scheduleService.isAuthor(Number(applicationContext.principal?.id), id);
         if (!isAuthor) {
             const exception = new ExceptionMessage("Access denied.");
             res.status(403);
